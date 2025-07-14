@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export default function CardDemo() {
+export default function Login() {
   return (
     <div className="min-h-screen min-w-screen bg-gradient-to-br from-primanry-50 to-primary-100 flex items-center justify-center p-4">
 
