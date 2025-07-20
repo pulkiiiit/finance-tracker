@@ -31,14 +31,15 @@ export default function RootLayout({
   const pathname = usePathname();
 
   const isLoginPage = pathname === "/";
+  const isSignupPage = pathname === "/signup";
 
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SidebarProvider>
-          {!isLoginPage && <AppSidebar />}
+          {!isLoginPage && !isSignupPage && <AppSidebar />}
           <main>
-            {!isLoginPage && <SidebarTrigger />} 
+            {!isLoginPage && !isSignupPage && <SidebarTrigger />} 
             {children}
           </main>
         </SidebarProvider>
