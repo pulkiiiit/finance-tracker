@@ -6,6 +6,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/sidebar/sidebar"
+import { Toaster } from 'sonner'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,8 +31,8 @@ export default function RootLayout({
 
   const pathname = usePathname();
 
-  const isLoginPage = pathname === "/";
-  const isSignupPage = pathname === "/signup";
+  const isLoginPage = pathname === "/login";
+  const isSignupPage = pathname === "/";
 
   return (
     <html lang="en">
@@ -41,6 +42,7 @@ export default function RootLayout({
           <main>
             {!isLoginPage && !isSignupPage && <SidebarTrigger />} 
             {children}
+            <Toaster richColors position="top-right" />
           </main>
         </SidebarProvider>
       </body>

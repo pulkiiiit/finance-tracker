@@ -1,6 +1,7 @@
 // Update the import path if the file is located at src/components/login/login-page.tsx
-import Login from "./(auth)/login/page"
+
+import SignUpForm from "@/components/signup/signup"
 
 export default function Page() {
-  return <Login/>
+  return <SignUpForm/>
 }

@@ -3,6 +3,9 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { auth, db } from "../../config/firebase";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { toast } from 'sonner'
 import {
   Card,
   CardAction, 
@@ -14,17 +17,42 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { doc, getDoc,setDoc } from "firebase/firestore";
 
 export default function SignUpForm() {
+  const provider = new GoogleAuthProvider();
   const router = useRouter();
 
+  const loginWithGoogle = async (e: React.FormEvent) =>{
+    try{
+      await signInWithPopup(auth, provider)
+      const user = auth.currentUser;
+      if(user){
+        const userDocRef = doc(db, "users" , user.uid);
+        const userDocSnapshot = await getDoc(userDocRef);
+        if(!userDocSnapshot.exists()){
+          await setDoc(userDocRef, {
+            userId : user.uid,
+            email : user.email,
+          })
+          e.preventDefault();
+          router.push("/dashboard");
+        }else {
+          e.preventDefault();
+          toast.info("You already have a account just try to login with your regiter email Id and password")
+        }
+      }
+    }catch (err){
+      console.log(err)
+    }
+  }
   function handleSignup(e: React.FormEvent) {
     e.preventDefault();
     router.push("/dashboard");
   }
   function goToLogin(e : React.FormEvent){
     e.preventDefault();
-    router.push("/");
+    router.push("/login");
   }
   return (
     <div className="min-h-screen min-w-screen bg-gradient-to-br from-primanry-50 to-primary-100 flex items-center justify-center p-4">
@@ -61,7 +89,7 @@ export default function SignUpForm() {
               <Button type="submit" className="w-full">
                 Sign up
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button onClick={loginWithGoogle} variant="outline" className="w-full">
                 Sign up with Google
               </Button>
             </CardFooter>
